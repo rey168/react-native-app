@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import qs from 'qs' ;
 import { Container, Header, Content, Form, Item, Input, Button, Text, Title, Label,Thumbnail, StyleSheet, NavigatorIOS} from 'native-base';
 import { connectStyle } from 'native-base';
 import listaUsuarios from './listaUsuarios';
@@ -10,10 +12,11 @@ class login extends Component {
         super(props);
 
         this.state = {
-            valortest : 'valor',
-            texto : '',
+            correo : 'rmiguel@cion.com.mx',
+            contrase : '1234',
         }
     }
+
     _botoonRegistrar(){
         this.props.navigator.push({
             component : registro,
@@ -34,17 +37,43 @@ class login extends Component {
             }*/
         });
     }
+    _listaClientes(){
+      this.props.navigator.push({
+          component : listaUsuarios,
+          title : 'Lista de Clientes',
+          rightButtonTitle: 'Agregar',
+          onRightButtonPress: () => {
+            this._botoonRegistrarCliente()
+          },
+      });
+    }
     _butoonLogin(){
-        this.props.navigator.push({
-            component : listaUsuarios,
-            title : 'Lista de Usuarios',
-            rightButtonTitle: 'Agregar',
-            onRightButtonPress: () => {
-              this._botoonRegistrarCliente()
-            },
-            /*passProps : {
-                parametro : this.state.valortest
-            }*/
+      const url = `http://localhost:3000/api/users/loginUsuario`;
+
+      const data = qs.stringify({
+          email: this.state.correo,
+          password: this.state.contrase
+      });
+
+      const headers = {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      };
+
+      axios.post(url, data, headers)
+        .then(function (response) {
+          //debugger;
+          if( response.data.codigo == "0" ){
+            //alert(response.data.message);
+            this._listaClientes();
+          }
+          else{
+            alert(response.data.message)
+          }
+          console.log(response);
+        })
+        .catch(function (error) {
+          //debugger;
+          console.log(error);
         });
     }
 
@@ -60,13 +89,13 @@ class login extends Component {
           <Form>
             <Item floatingLabel>
               <Label>Correo</Label>
-              <Input />
+              <Input onChangeText={text => this.setState({ correo: text })} value ={this.state.correo} />
             </Item>
             <Item floatingLabel last>
               <Label>Contraseña</Label>
-              <Input />
+              <Input onChangeText={text => this.setState({ contrase: text })} value = {this.state.contrase} />
             </Item>
-            <Button block style={styles.Button} onPress={() => this._butoonLogin()}>
+            <Button block style={styles.Button} onPress={  () => {this._butoonLogin.bind()}}>
             <Text>Login</Text>
             </Button>
             <Button info style={styles.textRegistrar} onPress={() => this._botoonRegistrar()}><Text> Registrar Usuario Nuevo </Text></Button>
