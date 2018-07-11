@@ -1,47 +1,46 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Form, Item, Input, Button, Text, Title, Label,Thumbnail, StyleSheet} from 'native-base';
-import { connectStyle } from 'native-base';
-class login extends Component {
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  NavigatorIOS
+} from 'react-native';
+import login from './login';
+
+
+type Props = {};
+export default class App extends Component<Props> {
   render() {
-    const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
-    const styles = this.props.style;
     return (
-      <Container>
-        <Header>
-        <Title style={styles.textContent}>Login</Title>
-        </Header>
-        <Content>
-        <Thumbnail large style= {styles.imagenLogin} source={{uri: uri}} />
-          <Form>
-            <Item floatingLabel>
-              <Label>Username</Label>
-              <Input />
-            </Item>
-            <Item floatingLabel last>
-              <Label>Password</Label>
-              <Input />
-            </Item>
-            <Button block style={styles.Button} onPress={() => this.props.navigation.navigate('Notifications')}>
-            <Text>Entrar</Text>
-          </Button>
-          </Form>
-        </Content>
-      </Container>
+      <NavigatorIOS
+        style={{
+          flex : 1
+        }}
+        initialRoute={{
+          component : login,
+          title : 'App Rey Login',
+        }}
+      />
     );
   }
 }
-const styles = {
-  imagenLogin:{
-    left: "40%",
-    top: 20,
-  },
-  Button: {
-    top: 20
-  },
-  textContent: {
-    fontSize: 20,
-    color: 'black',
-  },
-};
 
-export default connectStyle('yourTheme.login', styles)(login);
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});

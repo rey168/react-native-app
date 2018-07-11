@@ -16,15 +16,11 @@ class registro extends Component {
                 <Input />
               </Item>
               <Item floatingLabel last>
-                <Label>Constraseña</Label>
+                <Label>Descripción</Label>
                 <Input />
               </Item>
               <Item floatingLabel last>
-                <Label>Edad</Label>
-                <Input />
-              </Item>
-              <Item floatingLabel last>
-                <Label>Correo</Label>
+                <Label>Pagina web personal</Label>
                 <Input />
               </Item>
               <Button block style={styles.Button} onPress={() => this.props.navigation.navigate('Notifications')}>
