@@ -4,13 +4,37 @@ import {
   StyleSheet,
   Text,
   View,
-  NavigatorIOS
+  NavigatorIOS,
+  AsyncStorage
 } from 'react-native';
 import login from './login';
+import listaUsuarios from './listaUsuarios';
 
 
-type Props = {};
-export default class App extends Component<Props> {
+
+export default class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+        valido: false
+    }
+  }
+   componentWillMount (){
+        const value =  AsyncStorage.getItem('persistence')
+        if (value == "true") {
+          // We have data!!
+          this.setState({valido:true})
+          console.log('bien');
+          //this._listaClientes()
+
+        }else{
+          this.setState({valido:false})
+          console.log('mal');
+
+        }
+    }
+
   render() {
     return (
       <NavigatorIOS
@@ -18,7 +42,7 @@ export default class App extends Component<Props> {
           flex : 1
         }}
         initialRoute={{
-          component : login,
+          component : (this.state.valido) ? listaUsuarios : login,
           title : 'App Rey Login',
         }}
       />

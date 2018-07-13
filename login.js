@@ -6,7 +6,8 @@ import listaUsuarios from './listaUsuarios';
 import registro from './registro';
 import registroClientes from './registroClientes';
 import {
-  StyleSheet
+  StyleSheet,
+  AsyncStorage
 } from 'react-native';
 
 export default class Login extends Component {
@@ -18,6 +19,14 @@ export default class Login extends Component {
         contrase : '1234',
     }
   }
+
+
+
+    cerrarSesion(){
+      AsyncStorage.removeItem('persistence')
+      console.log("cerrar sesion");
+    }
+
   _botoonRegistrar(){
     this.props.navigator.push({
         component : registro,
@@ -39,12 +48,21 @@ export default class Login extends Component {
   _listaClientes(){
     this.props.navigator.push({
         component : listaUsuarios,
-        title : 'Lista de Clientes',
-        rightButtonTitle: 'Agregar',
-        onRightButtonPress: () => {
+        title : 'Lista',
+        leftButtonTitle: 'Agregar',
+        rightButtonTitle: 'Cerrar sesión',
+        onLeftButtonPress: () => {
           this._botoonRegistrarCliente()
         },
+        onRightButtonPress: () => {
+          this.cerrarSesion();
+        },
     });
+  }
+
+  _storeData(){
+      AsyncStorage.setItem('persistence', 'true');
+      console.log('User successfully saved.')
   }
 
 
@@ -64,6 +82,7 @@ export default class Login extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
       if( responseJson.codigo == "0" ){
+          this._storeData();
           this._listaClientes();
       }
         else{
