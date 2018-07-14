@@ -20,7 +20,7 @@ export default class App extends Component {
         valido: false
     }
   }
-   componentWillMount (){
+   /*componentWillMount (){
         const value =  AsyncStorage.getItem('persistence')
         if (value == "true") {
           // We have data!!
@@ -33,7 +33,7 @@ export default class App extends Component {
           console.log('mal');
 
         }
-    }
+    }*/
 
   render() {
     return (
