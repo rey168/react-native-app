@@ -1,7 +1,49 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Form, Item, Input, Button, Text, Title, Label,Thumbnail, StyleSheet} from 'native-base';
-import { connectStyle } from 'native-base';
-class detallesClientes extends Component {
+import { Container, Header, Content, Form, Item, Input, Button, Text, Title, Label,Thumbnail, NavigatorIOS} from 'native-base';
+import webView from './webView';
+import maps from './maps';
+import {
+  StyleSheet,
+  AsyncStorage,
+  WebView
+} from 'react-native';
+export default class detallesClientes extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+        nombre : '',
+        descripcion : '',
+        paginaWeb: this.props.url,
+    }
+  }
+  /*componentDidMount(){
+        console.log('props', this.props);
+    }*/
+
+  urlWeb(){
+    this.props.navigator.push({
+        component : webView,
+        title : 'Pagina web Cliente',
+        leftButtonTitle: '',
+        passProps : {
+            webView : this.state.paginaWeb
+        }
+    });
+  }
+
+  maps(){
+    this.props.navigator.push({
+        component : maps,
+        title : 'Ubicasión del Cliente',
+        leftButtonTitle: '',
+        /*passProps : {
+            webView : this.state.paginaWeb
+        }*/
+    });
+  }
+
   render() {
     const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
     return (
@@ -11,12 +53,12 @@ class detallesClientes extends Component {
         <Content>
           <Thumbnail square large style= {styles.imagenLogin} source={{uri: uri}} />
                 <Label style={styles.textContentNom}>Nombre:</Label>
-                <Label style={styles.textContentNom}>Rey</Label>
+                <Label style={styles.textContentNom}>{this.props.name}</Label>
                 <Label style={styles.textContentDesc}>Descripción:</Label>
-                <Label style={styles.textContentDesc}>Lista prueba IOS.</Label>
+                <Label style={styles.textContentDesc}>{this.props.descrip}</Label>
                 <Label style={styles.textContentPagina}>Pagina web personal:</Label>
-                <Label style={styles.textContentPagina}>https:www.google.com.mx</Label>
-              <Button block style={styles.Button} onPress={() => this.props.navigation.navigate('Notifications')}>
+                <Label style={styles.textContentPagina} onPress={() => this.urlWeb()}>{this.props.url}</Label>
+              <Button block style={styles.Button} onPress={() => this.maps()}>
               <Text>Ubicasión del cliente</Text>
               </Button>
         </Content>
@@ -25,7 +67,7 @@ class detallesClientes extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   imagenLogin:{
     left: "40%",
     top: 20,
@@ -45,9 +87,7 @@ const styles = {
   },
   textContentPagina: {
     fontSize: 20,
-    color: 'black',
+    color: 'blue',
     top: "40%"
   },
-};
-
-export default connectStyle('yourTheme.detallesClientes', styles)(detallesClientes);
+});
